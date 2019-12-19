@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 /*
-1.ÊäÈëÒ»¶ÎÓ¢ÎÄ¶ÌÎÄ£¬¼ÆËãµ¥´ÊÊı£¬²¢°Ñ×î³¤¡¢×î¶ÌµÄµ¥´ÊÊä³ö£¬ÒªÇóÓÃÓ¢ÎÄ¶ÌÎÄÓÃÀàCEnglishSectionÊµÏÖ¶ÌÎÄ´¦ÀíµÄ¹¦ÄÜ£»
+1.è¾“å…¥ä¸€æ®µè‹±æ–‡çŸ­æ–‡ï¼Œè®¡ç®—å•è¯æ•°ï¼Œå¹¶æŠŠæœ€é•¿ã€æœ€çŸ­çš„å•è¯è¾“å‡ºï¼Œè¦æ±‚ç”¨è‹±æ–‡çŸ­æ–‡ç”¨ç±»CEnglishSectionå®ç°çŸ­æ–‡å¤„ç†çš„åŠŸèƒ½ï¼›
 */
 
 class CEnglishSection
@@ -31,67 +31,57 @@ public:
 //fun.h
 #pragma once
 #include"EnglishSection.h"
-inline void CEnglishSection::Input(string paragraph)//½«×Ö·û´®¸´ÖÆÈëÀà
+inline void CEnglishSection::Input(string paragraph)//å°†å­—ç¬¦ä¸²å¤åˆ¶å…¥ç±»
 {
 	strPara = paragraph;
 }
 inline CEnglishSection::CEnglishSection(void)
 {
-	num = 0;//¸³³õÖµ
+	num = 0;//èµ‹åˆå€¼
 }
 inline CEnglishSection::~CEnglishSection(void)
 {
 }
-int CEnglishSection::GetNumWords()//¼ÆÊı
+int CEnglishSection::GetNumWords()//è®¡æ•°
 {
-	int size = strPara.size();
-	for (int i = 0; i <=size; i++)
-		if (strPara[i] == ' ' || strPara[i] == '\0')//Óöµ½¿Õ¸ñºÍ×Ö·û´®Ä©Î²+1
-		{
-			num++;
-			if (strPara[i] == ',' || strPara[i] == '.' || strPara[i] == '!' || strPara[i] == ';')//Ë³±ãÌæ»»±êµã
-				strPara[i] = ' ';
-		}
+	Process();
 	return num;
 }
 inline void CEnglishSection::Process()
 {
 	string tem;
-	minWord.resize(20);//·Å´óÄÚ´æ
+	minWord.resize(20);//æ”¾å¤§å†…å­˜
 	int size = strPara.size(),i,j=0;
-	for (i = 0; i <= size; i++)
+	for (i = 0; i < size; i++)
 	{
-		if (strPara[i] != ' ' && strPara[i] != '\0')//µ¥´ÊÎ´½áÊø
+		if (strPara[i]>=65&&strPara[i]<=90||strPara[i]>=97&&strPara[i]<=122)//å•è¯æœªç»“æŸ
 		{
-			tem.resize(++j);//ÖØĞÂ·ÖÅä¿Õ¼ä
-			tem[j-1] = strPara[i];//¸´ÖÆ×ÖÄ¸
+			tem.resize(++j);//é‡æ–°åˆ†é…ç©ºé—´
+			tem[j-1] = strPara[i];//å¤åˆ¶å­—æ¯
 		}
 		else
 		{
-			if (maxWord.size() < j)//ÒÑÓĞ×î´óµ¥´Ê³¤¶ÈĞ¡ÓÚµ±Ç°µ¥´Ê
-			{
-				maxWord.resize(j);
+			if (strPara[i] ==' '||strPara[i+1]=='\0')
+				num++;
+			if (maxWord.size() < j)//å·²æœ‰æœ€å¤§å•è¯é•¿åº¦å°äºå½“å‰å•è¯
 				maxWord = tem;
-			}
-			if (minWord.size() > j)//ÒÑÓĞ×îĞ¡µ¥´Ê³¤¶È´óÓÚµ±Ç°µ¥´Ê
-			{
-				minWord.resize(j);
+			if (minWord.size() > j)//å·²æœ‰æœ€å°å•è¯é•¿åº¦å¤§äºå½“å‰å•è¯
 				minWord = tem;
-			}
-			tem.clear();//Çå¿ÕÁÙÊ±µ¥´Ê
-			j = 0;//¸´Î»
+			if(strPara[i]==' ')
+				tem.clear();//æ¸…ç©ºä¸´æ—¶å•è¯
+			j = 0;//å¤ä½
 		}
 	}
 }
 inline string CEnglishSection::GetMaxWord()
 {
-	Process();
 	return string(maxWord);
 }
 inline string CEnglishSection::GetMinWord()
 {
 	return string(minWord);
 }
+
 
 
 //CEnglishSection.cpp
@@ -106,7 +96,7 @@ int main()
 {
 	CEnglishSection es;
 	string str;
-	//Ó¢ÎÄ±êµãºóĞëÓĞ¿Õ¸ñ
+	//è‹±æ–‡æ ‡ç‚¹åé¡»æœ‰ç©ºæ ¼
 	str = "There are moments in life when you miss someone so much that you just want to pick them from your dreams and hug them for real! Dream what you want to dream; go where you want to go; be what you want to be, because you have only one life and one chance to do all the things you want to do.";
 
 	es.Input(str);
